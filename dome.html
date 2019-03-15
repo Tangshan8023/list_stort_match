@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+        li{
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="seach"><br/>
+        <ul>
+            <li v-for="(info, index) in filters" :key="index">
+                {{index}}---{{info.name}}---{{info.age}}
+            </li>
+        </ul>
+        <button @click="sortAscend(1)">升序</button><br/>
+        <button @click="gradeDown(2)">降序</button><br/>
+
+        <button @click="fuzzySearch(0)">默认</button>
+    </div>
+    <script type="text/javascript" src="./js/vue.js"></script>
+    <script>
+        new Vue({
+           el:"#app",
+           data:{
+               type: 0,
+               seach:"",
+               people:[
+                   {name: 'bob', age: 21},
+                   {name: "tom", age: 22},
+                   {name: "arry", age: 21},
+                   {name: "toty", age: 19},
+                   {name: "anly", age: 18}
+               ]
+           },
+           computed:{
+               filters(){
+                   let {seach, people,type} = this;
+                   let arrs = people.filter(item => item.name.match(seach));
+                   if(type !== 0){
+                       if(type === 1){
+                           arrs.sort(function (a, b) {
+                               return a.age - b.age
+                           });
+                       }else{
+                           arrs.sort(function (a, b) {
+                               return b.age - a.age
+                           });
+                       }
+                   }
+                   return arrs
+               }
+           },
+           methods:{
+               sortAscend(num){
+                   this.type = num;
+               },
+               gradeDown(num){
+                   this.type = num;
+               },
+               fuzzySearch(num){
+                   this.type = num;
+               }
+           }
+        });
+    </script>
+</body>
+</html>
